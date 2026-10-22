@@ -25,13 +25,11 @@ Deno.test("trustmebro#verify retrieved (recorded): bills the retrieved line only
     });
     assertEquals(result.httpStatus, 200);
     assertEquals(result.isProviderError, false);
-    assertEquals(result.usage.credits, { default: 0.003 });
-    assertEquals(result.usage.evidence.retrieved, 1);
-    assertEquals(result.usage.evidence.constructed ?? 0, 0);
-    assertEquals(
-        (result.output as Record<string, unknown>).source,
-        "retrieved",
-    );
+    assertEquals(result.usage, {
+        credits: { default: 0.003 },
+        evidence: { retrieved: 1, constructed: 0 },
+    });
+    assertEquals(result.output, fixture.calls[0].res.body);
 });
 
 Deno.test("trustmebro#verify constructed (recorded): bills the constructed line only", async () => {
@@ -46,13 +44,11 @@ Deno.test("trustmebro#verify constructed (recorded): bills the constructed line 
         fixture,
     });
     assertEquals(result.httpStatus, 200);
-    assertEquals(result.usage.credits, { default: 0.01 });
-    assertEquals(result.usage.evidence.constructed, 1);
-    assertEquals(result.usage.evidence.retrieved ?? 0, 0);
-    assertEquals(
-        (result.output as Record<string, unknown>).source,
-        "constructed",
-    );
+    assertEquals(result.usage, {
+        credits: { default: 0.01 },
+        evidence: { constructed: 1, retrieved: 0 },
+    });
+    assertEquals(result.output, fixture.calls[0].res.body);
 });
 
 for (
