@@ -82,7 +82,7 @@ for (
 Deno.test("trustmebro#verify: claim bounds are enforced by the compiled schema", async () => {
     const unit = await testSealedUnit(ID);
     const fixture = await loadFixture(`${fixturesDir}retrieved.json`);
-    for (const claim of ["", "x".repeat(601)]) {
+    for (const claim of ["", "   ", "x".repeat(601)]) {
         await assertRejects(
             () =>
                 runEndpoint({
